@@ -13,7 +13,11 @@ import (
 )
 
 func parseFile(target float64) (int64, error) {
-    file, err := os.Open("master_file.txt")
+    filename := os.Getenv("CHUNK_FILE")
+    if filename == "" {
+        return -1, errors.New("File path missing")
+    }
+    file, err := os.Open(filename)
     if err != nil {
         fmt.Println(err)
         fmt.Println("Error in error in opening the file")
