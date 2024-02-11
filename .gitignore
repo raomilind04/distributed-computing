@@ -1,1 +1,5 @@
 __pycache__
+.DS_Store
+
+# too big
+master_file.txt
