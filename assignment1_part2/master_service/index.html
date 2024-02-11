@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pi Input</title>
+  </head>
+  <body>
+    <h1>Enter a number to send to the Pi server:</h1>
+    <form action="/" method="POST">
+      <input type="text" name="inputNumber" required />
+      <button type="submit">Submit</button>
+    </form>
+    <h2>Result:</h2>
+    <p>{{ .Result }}</p>
+  </body>
+</html>
