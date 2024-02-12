@@ -17,25 +17,41 @@ services:
       - pi_api_4
 
   pi_api_1:
-    build: ./pi_service
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_0.txt
     environment:
       SERVER_NUMBER: 1
       CHUNK_FILE: chunk_0.txt
 
   pi_api_2:
-    build: ./pi_service
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_1.txt
     environment:
       SERVER_NUMBER: 2
       CHUNK_FILE: chunk_1.txt
 
   pi_api_3:
-    build: ./pi_service
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_2.txt
     environment:
       SERVER_NUMBER: 3
       CHUNK_FILE: chunk_2.txt
 
   pi_api_4:
-    build: ./pi_service
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_3.txt
     environment:
       SERVER_NUMBER: 4
       CHUNK_FILE: chunk_3.txt
