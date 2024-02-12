@@ -22,7 +22,7 @@ RUN go build -o main main.go
 
 FROM alpine:latest AS runtime
 
-COPY --from=py_stage /app/data/${CHUNK_FILE} ./${CHUNK_FILE}
+COPY --from=py_stage /app/data/$CHUNK_FILE ./$CHUNK_FILE
 
 COPY --from=builder /app/main /app/main
 

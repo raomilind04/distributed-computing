@@ -21,7 +21,6 @@ services:
     environment:
       SERVER_NUMBER: 1
       CHUNK_FILE: chunk_0.txt
-      PORT_NUMBER:
 
   pi_api_2:
     build: ./pi_service
@@ -34,8 +33,8 @@ services:
     environment:
       SERVER_NUMBER: 3
       CHUNK_FILE: chunk_2.txt
-  pi_api_4:
 
+  pi_api_4:
     build: ./pi_service
     environment:
       SERVER_NUMBER: 4
