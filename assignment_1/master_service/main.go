@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -15,14 +16,54 @@ type piApiResponse struct {
 	Err string `json:"error"`
 }
 
-func loadBalancingFunction(inputNumber float64) int {
-	var serverNumber int
-	if inputNumber < 100 {
-		serverNumber = 1
-	} else {
-		serverNumber = 2
-	}
-	return serverNumber
+func loadBalancingFunction(x float64) int {
+    fmt.Println(os.Getenv("SERVER_COUNT"))
+    serverCount, err := strconv.ParseInt(os.Getenv("SERVER_COUNT"), 10, 64)
+    if err != nil {
+        fmt.Println("SERVER_COUNT env variable can not be parsed")
+        panic("SERVER_COUNT is invalid")
+    }
+    var serverNumber int
+    if serverCount == 1 {
+        serverNumber = 1
+    } else if serverCount == 2 {
+        if x >= 1 && x < 45215900000000 {
+            serverNumber = 1
+        } else {
+            serverNumber = 2
+        }
+    } else if serverCount == 4 {
+        if x >= 1 && x <= 383027000000 {
+            serverNumber = 1
+        } else if x >= 383028000000 && x <= 45215900000000 {
+            serverNumber = 2
+        } else if x >= 45216000000000 && x <= 9412060000000000 {
+            serverNumber = 3
+        } else {
+            serverNumber = 4
+        }
+    } else if serverCount == 8 {
+        if x >= 1 && x <= 34846100000 {
+            serverNumber = 1
+        } else if x >= 34846200000 && x <= 383027000000 {
+            serverNumber = 2
+        } else if x >= 383028000000 && x <= 4175930000000 {
+            serverNumber = 3
+        } else if x >= 4175940000000 && x <= 45215900000000 {
+            serverNumber = 4
+        } else if x >= 45216000000000 && x <= 906640000000000 {
+            serverNumber = 5
+        } else if x >= 906641000000000 && x <= 9412060000000000 {
+            serverNumber = 6
+        } else if x >= 9412070000000000 && x <= 97577200000000000 {
+            serverNumber = 7
+        } else {
+            serverNumber = 8
+        }
+    } else {
+        panic("Invalid server Count: Should be 1, 2, 4, 8")
+    }
+    return serverNumber
 }
 
 func main() {
