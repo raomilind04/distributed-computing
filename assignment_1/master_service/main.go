@@ -114,28 +114,28 @@ func main() {
 
 		if res.StatusCode != http.StatusOK {
 			if err := json.NewDecoder(res.Body).Decode(&piResult); err != nil {
-				fmt.Println(err)
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"error": err.Error(),
-				})
-			}
+            fmt.Println(err)
+            return
+      }
+      err = htmlTemplate.Execute(c.Writer, gin.H{
+            "Error": piResult.Err,
+        })
 			fmt.Println("Failure:", piResult.Err)
 			fmt.Printf("%d : Something went wrong", res.StatusCode)
-			return
-		}
+		} else {
+        if err := json.NewDecoder(res.Body).Decode(&piResult); err != nil {
+			      fmt.Println(err)
+			      c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				        "error": err.Error(),
+			      })
+			      return
+		    }
 
-		if err := json.NewDecoder(res.Body).Decode(&piResult); err != nil {
-			fmt.Println(err)
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
-		err = htmlTemplate.Execute(c.Writer, gin.H{
-			"Result": piResult.Pi,
-		})
-	})
+		    err = htmlTemplate.Execute(c.Writer, gin.H{
+			      "Result": piResult.Pi,
+		    })
+    }
+})
 
 	r.Run(":3000")
 }
