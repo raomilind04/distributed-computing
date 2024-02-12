@@ -15,6 +15,16 @@ type piApiResponse struct {
 	Err string `json:"error"`
 }
 
+func loadBalancingFunction(inputNumber float64) int {
+	var serverNumber int
+	if inputNumber < 100 {
+		serverNumber = 1
+	} else {
+		serverNumber = 2
+	}
+	return serverNumber
+}
+
 func main() {
 
 	htmlTemplate, err := template.ParseFiles("index.html")
@@ -44,12 +54,8 @@ func main() {
 			})
 			return
 		}
-		var serverNumber int
-		if inputNumber < 100 {
-			serverNumber = 1
-		} else {
-			serverNumber = 2
-		}
+
+		serverNumber := loadBalancingFunction(inputNumber)
 		url := fmt.Sprintf("http://pi_api_%d:8080/pi?target=%f", serverNumber, inputNumber)
 
 		res, err := http.Get(url)
@@ -77,7 +83,6 @@ func main() {
 			return
 		}
 
-		fmt.Println("Body:", res.Body)
 		if err := json.NewDecoder(res.Body).Decode(&piResult); err != nil {
 			fmt.Println(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -85,7 +90,7 @@ func main() {
 			})
 			return
 		}
-		fmt.Println("struct : ", piResult)
+
 		err = htmlTemplate.Execute(c.Writer, gin.H{
 			"Result": piResult.Pi,
 		})
