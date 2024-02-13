@@ -60,6 +60,40 @@ func loadBalancingFunction(x float64) int {
 		} else {
 			serverNumber = 8
 		}
+	} else if serverCount == 16 {
+		if x >= 1 && x <= 4052740000 {
+			serverNumber = 1
+		} else if x >= 4052750000 && x <= 34846100000 {
+			serverNumber = 2
+		} else if x >= 34846200000 && x <= 81574500000 {
+			serverNumber = 3
+		} else if x >= 81574600000 && x <= 383028000000 {
+			serverNumber = 4
+		} else if x >= 383029000000 && x <= 850312000000 {
+			serverNumber = 5
+		} else if x >= 850313000000 && x <= 4175950000000 {
+			serverNumber = 6
+		} else if x >= 4175960000000 && x <= 8848790000000 {
+			serverNumber = 7
+		} else if x >= 8848800000000 && x <= 45216200000000 {
+			serverNumber = 8
+		} else if x >= 45216300000000 && x <= 439360000000000 {
+			serverNumber = 9
+		} else if x >= 439361000000000 && x <= 906643000000000 {
+			serverNumber = 10
+		} else if x >= 906644000000000 && x <= 4739250000000000 {
+			serverNumber = 11
+		} else if x >= 4739260000000000 && x <= 9412080000000000 {
+			serverNumber = 12
+		} else if x >= 9412090000000000 && x <= 50849000000000000 {
+			serverNumber = 13
+		} else if x >= 50849100000000000 && x <= 97577300000000000 {
+			serverNumber = 14
+		} else if x >= 97577400000000000 && x <= 543055000000000000 {
+			serverNumber = 15
+		} else {
+			serverNumber = 16
+		}
 	} else {
 		panic("Invalid server Count: Should be 1, 2, 4, 8")
 	}
@@ -147,4 +181,6 @@ func main() {
 	t1Master := time.Since(t0Master)
 	fmt.Printf("Application took %v to seconds to server the request \n", t1Master)
 	fmt.Printf("Average time to serve the requests is %v", t1Master/1000)
+
+	time.Sleep(30 * time.Minute)
 }

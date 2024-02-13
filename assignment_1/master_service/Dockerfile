@@ -18,4 +18,4 @@ COPY --from=builder /app/input.txt ./
 
 EXPOSE 8080
 
-CMD ["/app/main"]
+CMD ["/app/main", "tail", "-f", "/dev/null"]
