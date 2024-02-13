@@ -1,4 +1,4 @@
-FROM  python:3.10-slim AS py_stage
+FROM  python:3.10-slim-buster AS py_stage
 
 ARG CHUNK_NAME
 

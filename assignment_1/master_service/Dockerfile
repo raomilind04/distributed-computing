@@ -12,9 +12,9 @@ RUN go build -o main main.go
 
 FROM alpine:latest AS runtime
 
-COPY --from=builder /app/index.html index.html
-
 COPY --from=builder /app/main /app/main
+
+COPY --from=builder /app/input.txt ./
 
 EXPOSE 8080
 

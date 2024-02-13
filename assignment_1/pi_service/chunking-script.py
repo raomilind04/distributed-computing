@@ -29,6 +29,6 @@ def split_file(input_file_path, output_file_prefix, num_chunks=8):
 
 input_file_path = "master_file.txt"
 output_file_prefix = "chunk_"
-num_chunks = 4
+num_chunks = 1
 
 split_file(input_file_path, output_file_prefix, num_chunks)

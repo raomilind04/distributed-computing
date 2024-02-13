@@ -12,15 +12,15 @@ services:
       - 3000:3000
     depends_on:
       - pi_api_1
-      - pi_api_2
-      - pi_api_3
-      - pi_api_4
+      # - pi_api_2
+      # - pi_api_3
+      # - pi_api_4
       # - pi_api_5
       # - pi_api_6
       # - pi_api_7
       # - pi_api_8
     environment:
-      SERVER_COUNT: 4
+      SERVER_COUNT: 1 
 
   pi_api_1:
     build:
@@ -32,35 +32,35 @@ services:
       SERVER_NUMBER: 1
       CHUNK_FILE: chunk_0.txt
 
-  pi_api_2:
-    build:
-      context: ./pi_service
-      dockerfile: Dockerfile
-      args:
-        CHUNK_NAME: chunk_1.txt
-    environment:
-      SERVER_NUMBER: 2
-      CHUNK_FILE: chunk_1.txt
+  # pi_api_2:
+  #   build:
+  #     context: ./pi_service
+  #     dockerfile: Dockerfile
+  #     args:
+  #       CHUNK_NAME: chunk_1.txt
+  #   environment:
+  #     SERVER_NUMBER: 2
+  #     CHUNK_FILE: chunk_1.txt
 
-  pi_api_3:
-    build:
-      context: ./pi_service
-      dockerfile: Dockerfile
-      args:
-        CHUNK_NAME: chunk_2.txt
-    environment:
-      SERVER_NUMBER: 3
-      CHUNK_FILE: chunk_2.txt
+  # pi_api_3:
+  #   build:
+  #     context: ./pi_service
+  #     dockerfile: Dockerfile
+  #     args:
+  #       CHUNK_NAME: chunk_2.txt
+  #   environment:
+  #     SERVER_NUMBER: 3
+  #     CHUNK_FILE: chunk_2.txt
 
-  pi_api_4:
-    build:
-      context: ./pi_service
-      dockerfile: Dockerfile
-      args:
-        CHUNK_NAME: chunk_3.txt
-    environment:
-      SERVER_NUMBER: 4
-      CHUNK_FILE: chunk_3.txt
+  # pi_api_4:
+  #   build:
+  #     context: ./pi_service
+  #     dockerfile: Dockerfile
+  #     args:
+  #       CHUNK_NAME: chunk_3.txt
+  #   environment:
+  #     SERVER_NUMBER: 4
+  #     CHUNK_FILE: chunk_3.txt
 
   # pi_api_5:
   #   build:
@@ -71,8 +71,8 @@ services:
   #   environment:
   #     SERVER_NUMBER: 5
   #     CHUNK_FILE: chunk_4.txt
-  #
-  #   pi_api_6:
+  
+  # pi_api_6:
   #   build:
   #     context: ./pi_service
   #     dockerfile: Dockerfile
@@ -81,8 +81,8 @@ services:
   #   environment:
   #     SERVER_NUMBER: 6
   #     CHUNK_FILE: chunk_5.txt
-  #
-  #   pi_api_7:
+
+  # pi_api_7:
   #   build:
   #     context: ./pi_service
   #     dockerfile: Dockerfile
@@ -91,8 +91,8 @@ services:
   #   environment:
   #     SERVER_NUMBER: 7
   #     CHUNK_FILE: chunk_7.txt
-  #
-  #   pi_api_8:
+
+  # pi_api_8:
   #   build:
   #     context: ./pi_service
   #     dockerfile: Dockerfile
