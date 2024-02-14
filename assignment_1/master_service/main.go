@@ -147,7 +147,7 @@ func handleRequest(inputNumber float64) {
 			fmt.Println(err)
 			return
 		}
-		result := fmt.Sprintf("%d", piResult.Pi)
+		result := fmt.Sprintf("%v                                             %v", inputNumber, piResult.Pi)
 		appendToFile("output.txt", result)
 	}
 }

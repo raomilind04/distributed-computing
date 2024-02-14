@@ -19,8 +19,16 @@ services:
       - pi_api_6
       - pi_api_7
       - pi_api_8
+      - pi_api_9
+      - pi_api_10
+      - pi_api_11
+      - pi_api_12
+      - pi_api_13
+      - pi_api_14
+      - pi_api_15
+      - pi_api_16
     environment:
-      SERVER_COUNT: 8
+      SERVER_COUNT: 16
 
   pi_api_1:
     build:
@@ -101,3 +109,83 @@ services:
     environment:
       SERVER_NUMBER: 8
       CHUNK_FILE: chunk_7.txt
+
+  pi_api_9:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_8.txt
+    environment:
+      SERVER_NUMBER: 9
+      CHUNK_FILE: chunk_8.txt
+
+  pi_api_10:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_9.txt
+    environment:
+      SERVER_NUMBER: 10
+      CHUNK_FILE: chunk_9.txt
+
+  pi_api_11:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_10.txt
+    environment:
+      SERVER_NUMBER: 11
+      CHUNK_FILE: chunk_10.txt
+
+  pi_api_12:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_11.txt
+    environment:
+      SERVER_NUMBER: 12
+      CHUNK_FILE: chunk_11.txt
+
+  pi_api_13:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_12.txt
+    environment:
+      SERVER_NUMBER: 13
+      CHUNK_FILE: chunk_12.txt
+  
+  pi_api_14:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_13.txt
+    environment:
+      SERVER_NUMBER: 14
+      CHUNK_FILE: chunk_13.txt
+
+  pi_api_15:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_14.txt
+    environment:
+      SERVER_NUMBER: 15
+      CHUNK_FILE: chunk_14.txt
+
+  pi_api_16:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_15.txt
+    environment:
+      SERVER_NUMBER: 16
+      CHUNK_FILE: chunk_15.txt

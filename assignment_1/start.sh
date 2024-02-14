@@ -1,9 +1,10 @@
 #!/bin/bash
 
-CHUNKS="$1"  
+CHUNKS="$1"
 
-echo "Chunk"
-CHUNKS=$CHUNKS python3 chunking-script.py
+echo "CHUNKS=$CHUNKS"
+export CHUNKS 
+python3 chunking-script.py
 
 if [ ! -d "data" ]; then
     echo "Python script failed."
@@ -15,12 +16,25 @@ if [ -d "pi_service/data" ] && [ "$(ls -A pi_service/data)" ]; then
     rm -rf pi_service/data/*
 fi
 
-echo "Move"
+echo "Move data directory"
 mv data pi_service/
 
 if [ ! -d "pi_service/data" ]; then
     echo "Failed to move"
     exit 1
+fi
+
+DOCKER_COMPOSE_PATH="../dockerCompose/$CHUNKS/docker-compose.yml"
+
+if [ -f "$DOCKER_COMPOSE_PATH" ]; then
+    echo "Moving $DOCKER_COMPOSE_PATH"
+    if [ -f "docker-compose.yml" ]; then
+        echo "Replacing"
+        rm -f docker-compose.yml
+    fi
+    cp "$DOCKER_COMPOSE_PATH" .
+else
+    echo "No docker-compose.yml file found at $DOCKER_COMPOSE_PATH"
 fi
 
 echo "Start Docker"
@@ -32,5 +46,4 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Completed."
-
 
