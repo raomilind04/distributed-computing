@@ -175,7 +175,7 @@ func main() {
 			continue
 		}
 		handleRequest(inputNumber)
-		fmt.Printf("Completed %v reqs", counter)
+		fmt.Printf("Completed %v reqs \n", counter)
 	}
 
 	t1Master := time.Since(t0Master)
