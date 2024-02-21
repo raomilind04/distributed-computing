@@ -1,0 +1,37 @@
+version: "3.8"
+
+networks:
+  pi_network:
+    external: true
+    driver: bridge
+
+services:
+  master:
+    build: ./master_service
+    ports:
+      - 3000:3000
+    depends_on:
+      - pi_api_1
+      - pi_api_2
+    environment:
+      SERVER_COUNT: 2
+
+  pi_api_1:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_0.txt
+    environment:
+      SERVER_NUMBER: 1
+      CHUNK_FILE: chunk_0.txt
+
+  pi_api_2:
+    build:
+      context: ./pi_service
+      dockerfile: Dockerfile
+      args:
+        CHUNK_NAME: chunk_1.txt
+    environment:
+      SERVER_NUMBER: 2
+      CHUNK_FILE: chunk_1.txt

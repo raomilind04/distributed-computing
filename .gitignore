@@ -3,3 +3,4 @@ __pycache__
 
 # too big
 master_file.txt
+*.txt
