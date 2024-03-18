@@ -1,8 +1,9 @@
+from flask import Flask, jsonify, render_template, request, redirect, url_for
+from flask_cors import CORS 
 import sys
-from flask import Flask, jsonify
-import requests
 
 app = Flask(__name__)
+CORS(app)
 
 class ChordNode:
     def __init__(self, node_id, pred_id, finger_table_file):
@@ -27,33 +28,47 @@ class ChordNode:
                     return self.finger_table[i % m]
             return self.finger_table[-1]
     
-    def lookup(self, key):
+    def lookup(self, key, path=None):
         key = key % 32
-        self.lookup_path = []
+        if path is None:
+            path = []
         successor = self.localSuccessorNode(key)
+        path.append(self.ID)
         if successor == self.ID:
-            return self.ID, self.lookup_path 
+            return self.ID, path
         else:
-            self.lookup_path.append(self.ID) 
-            print("Sending to next node: ", successor)
-            successor_url = f"http://chord-node-service/lookup/{successor}"
-            response = requests.get(successor_url, data=str(key))
-            data = response.json()
-            responsible_node, path = data['key'], data['path']
-            return responsible_node, path + self.lookup_path
+            return successor, path
 
 chord_node = None
 
 @app.route('/lookup/<int:key>', methods=['GET'])
 def lookup_api(key):
     global chord_node
+    
     try:
-        responsible_node, path = chord_node.lookup(key)
-        return jsonify({'key': responsible_node, 'path': path})
+        if request.args.get('path'):
+            path = request.args.get('path').split(',')
+            path = list(map(int, path))
+        else:
+            path = None
+    
+        successor, path = chord_node.lookup(key, path)
+        if successor == chord_node.ID:
+            formatted_path = " -> ".join(map(str, path))
+            return jsonify({'key': successor, 'path': formatted_path})
+        else:
+            path_str = ','.join(map(str, path))
+            redirect_url = f"http://localhost:8081/lookup/{key}?path={path_str}"
+            return redirect(redirect_url)
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-def run_server(port=8080):
+
+def run_server(port=8081):
     global chord_node
     chord_node = ChordNode(int(sys.argv[1]), int(sys.argv[2]), sys.argv[3])
     app.run(host='0.0.0.0', port=port)

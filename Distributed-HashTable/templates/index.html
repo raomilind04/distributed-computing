@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord DHT</title>
+</head>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+</style>
+<body>
+    <h1 class="container">Chord DHT</h1>
+    <h3 class="container">Milind Singh Rao</h1>
+    <div class="container">
+        <label for="keyInput">Enter Key:</label>
+        <input type="text" id="keyInput">
+        <button onclick="lookup()">Lookup</button>
+    </div>
+    <div id="result" class="container"></div>
+
+    <script>
+        function lookup() {
+            var key = document.getElementById("keyInput").value;
+            fetch("/lookup/" + key)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerHTML = "Responsible Node: " + data.key + "<br>Path: " + data.path;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
