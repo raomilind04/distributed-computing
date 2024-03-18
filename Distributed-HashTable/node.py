@@ -5,37 +5,42 @@ import requests
 app = Flask(__name__)
 
 class ChordNode:
-    def __init__(self, node_id, finger_table_file):
-        self.ID = node_id
+    def __init__(self, node_id, pred_id, finger_table_file):
+        self.ID = int(node_id)
+        self.pred = int(pred_id)
         self.finger_table = self.load_finger_table(finger_table_file)
-        self.lookup_path = []
+        print("ID:", self.ID, "Pred:", self.pred, "Finger Table:", self.finger_table)
 
     def load_finger_table(self, finger_table_file):
         with open(finger_table_file, 'r') as file:
             return [int(line.strip()) for line in file.readlines()]
 
     def localSuccessorNode(self, key):
-        if self.ID < key <= self.finger_table[0]:
+        m = len(self.finger_table)
+        if self.pred < key <= self.ID:
+            return self.ID
+        elif self.ID < key <= self.finger_table[0]:
             return self.finger_table[0]
         else:
-            for i in range(len(self.finger_table) - 1):
-                if self.finger_table[i] <= key < self.finger_table[i + 1]:
-                    return self.finger_table[i]
-
+            for i in range(0, m):
+                if self.finger_table[i % m] <= key < self.finger_table[(i+1) % m] or self.finger_table[i] == key:
+                    return self.finger_table[i % m]
+            return self.finger_table[-1]
+    
     def lookup(self, key):
-        key = key % 32  # Modulo arithmetic
-        self.lookup_path = []  # Initialize path for this lookup
+        key = key % 32
+        self.lookup_path = []
         successor = self.localSuccessorNode(key)
         if successor == self.ID:
-            return self.ID, self.lookup_path  # Key found here
+            return self.ID, self.lookup_path 
         else:
-            self.lookup_path.append(self.ID)  # Add current node to path
+            self.lookup_path.append(self.ID) 
+            print("Sending to next node: ", successor)
             successor_url = f"http://chord-node-service/lookup/{successor}"
             response = requests.get(successor_url, data=str(key))
-            # Parse response assuming it contains (responsible_node, path)
             data = response.json()
             responsible_node, path = data['key'], data['path']
-            return responsible_node, path + self.lookup_path  # Combine paths
+            return responsible_node, path + self.lookup_path
 
 chord_node = None
 
@@ -50,11 +55,11 @@ def lookup_api(key):
 
 def run_server(port=8080):
     global chord_node
-    chord_node = ChordNode(int(sys.argv[1]), sys.argv[2])
+    chord_node = ChordNode(int(sys.argv[1]), int(sys.argv[2]), sys.argv[3])
     app.run(host='0.0.0.0', port=port)
 
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("Error: Incorrect cmd")
         return
 
