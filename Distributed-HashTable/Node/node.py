@@ -1,6 +1,11 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+#!/bin/python3
+from flask import Flask, jsonify, render_template, request, redirect
 from flask_cors import CORS 
-import sys
+import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)
@@ -10,7 +15,7 @@ class ChordNode:
         self.ID = int(node_id)
         self.pred = int(pred_id)
         self.finger_table = self.load_finger_table(finger_table_file)
-        print("ID:", self.ID, "Pred:", self.pred, "Finger Table:", self.finger_table)
+        logger.info("ID:", self.ID, "Pred:", self.pred, "Finger Table:", self.finger_table)
 
     def load_finger_table(self, finger_table_file):
         with open(finger_table_file, 'r') as file:
@@ -57,28 +62,24 @@ def lookup_api(key):
             formatted_path = " -> ".join(map(str, path))
             return jsonify({'key': successor, 'path': formatted_path})
         else:
+            target_service_name = f"chord-node-service-{successor}"
+            successor_address = f"http://{target_service_name}.default.svc.cluster.local:8080/lookup/{key}"
             path_str = ','.join(map(str, path))
-            redirect_url = f"http://localhost:8081/lookup/{key}?path={path_str}"
+            redirect_url = f"{successor_address}?path={path_str}"
+            logger.info(f"Redirect to {redirect_url}")
             return redirect(redirect_url)
+        
     except Exception as e:
+        logger.error(e)
         return jsonify({'error': str(e)}), 400
-    
-@app.route('/')
-def index():
-    return render_template('index.html')
 
-
-def run_server(port=8081):
+def run_server(port=8080):
     global chord_node
-    chord_node = ChordNode(int(sys.argv[1]), int(sys.argv[2]), sys.argv[3])
+    chord_node = ChordNode(int(os.environ['NODE_ID']), int(os.environ['PREV_NODE_ID']), os.environ['FINGER_TABLE_FILE'])
     app.run(host='0.0.0.0', port=port)
 
 def main():
-    if len(sys.argv) != 4:
-        print("Error: Incorrect cmd")
-        return
-
     run_server()
-
+# docker buildx build --platform=linux/amd64 -t raomilind04/chord-node-app:latest-amd64 .
 if __name__ == "__main__":
     main()

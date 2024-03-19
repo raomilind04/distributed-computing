@@ -24,14 +24,14 @@
 
     <script>
         function lookup() {
-            var key = document.getElementById("keyInput").value;
+            var key = parseInt(document.getElementById("keyInput").value);
             fetch("/lookup/" + key)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("result").innerHTML = "Responsible Node: " + data.key + "<br>Path: " + data.path;
                 })
                 .catch(error => console.error('Error:', error));
-        }
+}
     </script>
 </body>
 </html>
