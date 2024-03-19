@@ -15,6 +15,9 @@ spec:
       requests: 
         cpu: "0.5" 
         memory: "512Mi"
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
     env:
     - name: NODE_ID
       value: "18"  
@@ -22,7 +25,10 @@ spec:
       value: "14"  
     - name: FINGER_TABLE_FILE
       value: "ft18.txt"
- 
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
 
 ---
 apiVersion: v1
@@ -31,7 +37,7 @@ metadata:
   name: chord-node-service-18
 spec:
   selector:
-    app: chord-node-1
+    app: chord-node-18
   ports:
   - protocol: TCP
     port: 8080

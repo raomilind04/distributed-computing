@@ -18,7 +18,8 @@ class ChordNode:
         logger.info("ID:", self.ID, "Pred:", self.pred, "Finger Table:", self.finger_table)
 
     def load_finger_table(self, finger_table_file):
-        with open(finger_table_file, 'r') as file:
+        finger_table_file_path = os.path.join("/data", finger_table_file)
+        with open(finger_table_file_path, 'r') as file:
             return [int(line.strip()) for line in file.readlines()]
 
     def localSuccessorNode(self, key):
