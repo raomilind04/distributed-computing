@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-14
+  labels:
+    app: chord-node-14
+spec:
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    resources:
+      limits:
+        cpu: "1"  
+        memory: "1Gi"  
+      requests: 
+        cpu: "0.5" 
+        memory: "512Mi"
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "14"  
+    - name: PREV_NODE_ID
+      value: "11"  
+    - name: FINGER_TABLE_FILE
+      value: "ft14.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-14
+spec:
+  selector:
+    app: chord-node-14
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
