@@ -8,6 +8,7 @@ spec:
   containers:
   - name: dht-server
     image: raomilind04/chord-node-app:server-latest-amd64
+    imagePullPolicy: Always
     resources:
       limits:
         cpu: "1"  

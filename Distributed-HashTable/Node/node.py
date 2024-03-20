@@ -15,7 +15,7 @@ class ChordNode:
         self.ID = int(node_id)
         self.pred = int(pred_id)
         self.finger_table = self.load_finger_table(finger_table_file)
-        logger.info("ID:", self.ID, "Pred:", self.pred, "Finger Table:", self.finger_table)
+        logger.info(f"ID:, {self.ID}, Pred:, {self.pred}, Finger Table:, {self.finger_table}")
 
     def load_finger_table(self, finger_table_file):
         finger_table_file_path = os.path.join("/data", finger_table_file)
@@ -24,7 +24,10 @@ class ChordNode:
 
     def localSuccessorNode(self, key):
         m = len(self.finger_table)
-        if self.pred < key <= self.ID:
+        if (self.pred <= key <= self.ID) or self.ID == key:
+            return self.ID
+        elif (self.pred > self.ID and key <= self.ID) or (self.pred > self.ID and key > self.ID):
+            # wrapping at the end
             return self.ID
         elif self.ID < key <= self.finger_table[0]:
             return self.finger_table[0]

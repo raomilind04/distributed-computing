@@ -8,6 +8,7 @@ spec:
   containers:
   - name: chord-node
     image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
     resources:
       limits:
         cpu: "1"  
