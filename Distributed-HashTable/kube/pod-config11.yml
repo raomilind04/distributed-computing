@@ -5,17 +5,12 @@ metadata:
   labels:
     app: chord-node-11
 spec:
+  nodeSelector:
+    node-type: worker1
   containers:
   - name: chord-node
     image: raomilind04/chord-node-app:latest-amd64
     imagePullPolicy: Always
-    resources:
-      limits:
-        cpu: "1"  
-        memory: "1Gi"  
-      requests: 
-        cpu: "0.5" 
-        memory: "512Mi"
     volumeMounts:
     - name: finger-table-volume
       mountPath: /data

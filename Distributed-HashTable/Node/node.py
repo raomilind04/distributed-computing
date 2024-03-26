@@ -26,7 +26,7 @@ class ChordNode:
         m = len(self.finger_table)
         if (self.pred <= key <= self.ID) or self.ID == key:
             return self.ID
-        elif (self.pred > self.ID and key <= self.ID) or (self.pred > self.ID and key > self.ID):
+        elif (self.pred > self.ID and key <= self.ID) or (self.pred > self.ID and key >= self.pred):
             # wrapping at the end
             return self.ID
         elif self.ID < key <= self.finger_table[0]:

@@ -14,24 +14,33 @@
 </style>
 <body>
     <h1 class="container">Chord DHT</h1>
-    <h3 class="container">Milind Singh Rao</h1>
+    <h3 class="container">Milind Singh Rao</h3>
+    <div class="container" id="timestampContainer"></div>
     <div class="container">
         <label for="keyInput">Enter Key:</label>
         <input type="text" id="keyInput">
         <button onclick="lookup()">Lookup</button>
     </div>
     <div id="result" class="container"></div>
-
     <script>
+        function displayTimestamp() {
+            const now = new Date();
+            const timestamp = now.toLocaleString();
+            const timestampContainer = document.getElementById('timestampContainer');
+            timestampContainer.innerHTML = `Timestamp: ${timestamp}`;
+        }
+
+        window.onload = displayTimestamp;
+
         function lookup() {
             var key = parseInt(document.getElementById("keyInput").value);
             fetch("/lookup/" + key)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("result").innerHTML = "Responsible Node: " + data.key + "<br>Path: " + data.path;
+                    document.getElementById("result").innerHTML = "key " + key + " found in node ID " + data.key + "<br>Search path is: " + data.path;
                 })
                 .catch(error => console.error('Error:', error));
-}
+        }
     </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import os
 import requests
 import logging
 
+
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ def lookup_api(key):
             logger.error(e)
             return jsonify({'error': f"Failed to get response from {starting_address}"}), 500
     except Exception as e:
-        logger.error(e)
+        logger.err(e)
         return jsonify({'error': str(e)}), 400
     
 @app.route('/')
