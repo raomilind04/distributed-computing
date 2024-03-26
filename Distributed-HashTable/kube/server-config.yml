@@ -11,9 +11,6 @@ spec:
   - name: dht-server
     image: raomilind04/chord-node-app:server-latest-amd64
     imagePullPolicy: Always
-    env:
-    - name: STARTING_NODE_ID
-      value: "1"
 
 ---
 apiVersion: v1

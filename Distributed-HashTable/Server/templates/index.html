@@ -19,6 +19,12 @@
     <div class="container">
         <label for="keyInput">Enter Key:</label>
         <input type="text" id="keyInput">
+    </div>
+    <div class="container">
+        <label for="startingNodeInput">Starting Node:</label>
+        <input type="text" id="startingNodeInput">
+    </div>
+    <div class="container">
         <button onclick="lookup()">Lookup</button>
     </div>
     <div id="result" class="container"></div>
@@ -34,7 +40,8 @@
 
         function lookup() {
             var key = parseInt(document.getElementById("keyInput").value);
-            fetch("/lookup/" + key)
+            var startingNode = parseInt(document.getElementById("startingNodeInput").value);
+            fetch("/lookup/" + key + "/" + startingNode)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("result").innerHTML = "key " + key + " found in node ID " + data.key + "<br>Search path is: " + data.path;
