@@ -1,0 +1,446 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: finger-table-config
+data:
+  ft1.txt: |
+    4
+    4
+    9
+    9
+    18
+  ft4.txt: |
+    9
+    9
+    9
+    14
+    20
+  ft9.txt: |
+    11
+    11
+    14
+    18
+    28
+  ft11.txt: |
+    14
+    14
+    18
+    20
+    28
+  ft14.txt: |
+    18
+    18
+    18
+    28
+    1
+  ft18.txt: |
+    20
+    20
+    28
+    28
+    4
+  ft20.txt: |
+    21
+    28
+    28
+    28
+    4
+  ft21.txt: |
+    28
+    28
+    28
+    1
+    9
+  ft28.txt: |
+    1
+    1
+    1
+    4
+    14
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-1
+  labels:
+    app: chord-node-1
+spec:
+  nodeSelector:
+    node-type: worker1
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "1"  
+    - name: PREV_NODE_ID
+      value: "28"  
+    - name: FINGER_TABLE_FILE
+      value: "ft1.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-1
+spec:
+  selector:
+    app: chord-node-1
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-4
+  labels:
+    app: chord-node-4
+spec:
+  nodeSelector:
+    node-type: worker1
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "4"  
+    - name: PREV_NODE_ID
+      value: "1"  
+    - name: FINGER_TABLE_FILE
+      value: "ft4.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-4
+spec:
+  selector:
+    app: chord-node-4
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-9
+  labels:
+    app: chord-node-9
+spec:
+  nodeSelector:
+    node-type: worker1
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "9"  
+    - name: PREV_NODE_ID
+      value: "4"  
+    - name: FINGER_TABLE_FILE
+      value: "ft9.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-9
+spec:
+  selector:
+    app: chord-node-9
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-11
+  labels:
+    app: chord-node-11
+spec:
+  nodeSelector:
+    node-type: worker1
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "11"  
+    - name: PREV_NODE_ID
+      value: "9"  
+    - name: FINGER_TABLE_FILE
+      value: "ft11.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-11
+spec:
+  selector:
+    app: chord-node-11
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-14
+  labels:
+    app: chord-node-14
+spec:
+  nodeSelector:
+    node-type: worker2
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "14"  
+    - name: PREV_NODE_ID
+      value: "11"  
+    - name: FINGER_TABLE_FILE
+      value: "ft14.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-14
+spec:
+  selector:
+    app: chord-node-14
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-18
+  labels:
+    app: chord-node-18
+spec:
+  nodeSelector:
+    node-type: worker2
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "18"  
+    - name: PREV_NODE_ID
+      value: "14"  
+    - name: FINGER_TABLE_FILE
+      value: "ft18.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-18
+spec:
+  selector:
+    app: chord-node-18
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-20
+  labels:
+    app: chord-node-20
+spec:
+  nodeSelector:
+    node-type: worker2
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "20"  
+    - name: PREV_NODE_ID
+      value: "18"  
+    - name: FINGER_TABLE_FILE
+      value: "ft20.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-20
+spec:
+  selector:
+    app: chord-node-20
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-21
+  labels:
+    app: chord-node-21
+spec:
+  nodeSelector:
+    node-type: worker2
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "21"  
+    - name: PREV_NODE_ID
+      value: "20"  
+    - name: FINGER_TABLE_FILE
+      value: "ft21.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-21
+spec:
+  selector:
+    app: chord-node-21
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chord-node-28
+  labels:
+    app: chord-node-28
+spec:
+  nodeSelector:
+    node-type: worker2
+  containers:
+  - name: chord-node
+    image: raomilind04/chord-node-app:latest-amd64
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: finger-table-volume
+      mountPath: /data
+    env:
+    - name: NODE_ID
+      value: "28"  
+    - name: PREV_NODE_ID
+      value: "21"  
+    - name: FINGER_TABLE_FILE
+      value: "ft28.txt"
+  volumes:
+  - name: finger-table-volume
+    configMap:
+      name: finger-table-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chord-node-service-28
+spec:
+  selector:
+    app: chord-node-28
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
