@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord DHT</title>
+</head>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+</style>
+<body>
+    <h1 class="container">Chord DHT</h1>
+    <h3 class="container">Milind Singh Rao</h3>
+    <div class="container" id="timestampContainer"></div>
+    <div class="container">
+        <label for="keyInput">Enter Key:</label>
+        <input type="text" id="keyInput">
+    </div>
+    <div class="container">
+        <label for="startingNodeInput">Starting Node:</label>
+        <input type="text" id="startingNodeInput">
+    </div>
+    <div class="container">
+        <button onclick="lookup()">Lookup</button>
+    </div>
+    <div id="result" class="container"></div>
+    <script>
+        function displayTimestamp() {
+            const now = new Date();
+            const timestamp = now.toLocaleString();
+            const timestampContainer = document.getElementById('timestampContainer');
+            timestampContainer.innerHTML = `Timestamp: ${timestamp}`;
+        }
+
+        window.onload = displayTimestamp;
+
+        function lookup() {
+            var key = parseInt(document.getElementById("keyInput").value);
+            var startingNode = parseInt(document.getElementById("startingNodeInput").value);
+            fetch("/lookup/" + key + "/" + startingNode)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerHTML = "key " + key + " found in node ID " + data.key + "<br>Search path is: " + data.path;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

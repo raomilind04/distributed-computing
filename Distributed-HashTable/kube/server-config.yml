@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dht-server
+  labels:
+    app: dht-server
+spec:
+  nodeSelector:
+    node-type: worker1
+  containers:
+  - name: dht-server
+    image: raomilind04/chord-node-app:server-latest-amd64
+    imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dht-server-service
+spec:
+  selector:
+    app: dht-server
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080
+  type: NodePort
